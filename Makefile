@@ -32,7 +32,7 @@ CC = gcc
 RM = rm -f
 CP = cp -f
 TAR = tar -zcvf
-DOXY = doxygen
+
 
 SRC = $(wildcard $(SRCDIR)*.c)
 HEAD = $(wildcard $(SRCDIR)*.h)
@@ -49,9 +49,7 @@ all : $(PROG) doc
 $(DIRS) :
 	mkdir -p $@
 
-	if [ ! -e Doxyfile ] ; \
-	then \
-		$(DOXY) -g ; \
+
 # Règle pour générer les fichiers objets (.o).
 #--------------------------------------------------------
 obj : $(OBJ) | $(BINDIR)
@@ -85,32 +83,14 @@ restore : | $(SAVEDIR)
 # Règle pour générer une archive
 #--------------------------------------------------------
 give : readme
-	$(TAR) $(LASTNAME)$(FISRTNAME)-$(PROG)$(COMP) $(SRCDIR) Makefile Doxyfile README.md
+	$(TAR) $(LASTNAME)$(FISRTNAME)-$(PROG)$(COMP) $(SRCDIR) Makefile README.md
 
-# Règle pour générer la documentation
-#--------------------------------------------------------
-doc : | $(DOCDIR) doxyfile
-	( cat Doxyfile ; \
-	echo 'PROJECT_NAME           = $(PROJECTNAME)' ; \
-	echo 'PROJECT_BRIEF          = $(PROJECTBRIEF)' ; \
-	echo 'RECURSIVE              = YES' ; \
-	echo 'OUTPUT_DIRECTORY       = $(DOCDIR)' ; \
-	echo 'OUTPUT_LANGUAGE        = $(OUTPUTLANGUAGE)' ; \
-	) \
-	| $(DOXY) -
 
 # Règle pour générer le README
 #--------------------------------------------------------
 readme :
 	touch README.md
 
-# Règle pour générer le Doxyfile
-#--------------------------------------------------------
-doxyfile :
-	if [ ! -e Doxyfile ] ; \
-	then \
-		$(DOXY) -g ; \
-	fi;
 
 # Règle pour afficher l'aide
 #--------------------------------------------------------
@@ -129,7 +109,6 @@ help :
 	@echo '  restore   Restaure les fichiers du dossier save/.'
 	@echo '  give      Génère une archive du projet/programme.'
 	@echo '  doc       Génère une documentation du programme dans doc/.'
-	@echo '  doxyfile  Génère un fichier Doxyfile.'
 	@echo '  readme    Génère un fichier README.md.'
 
 # Règle pour afficher les variables
