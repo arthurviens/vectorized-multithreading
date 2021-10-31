@@ -3,4 +3,4 @@
 #include <stdlib.h>
 #include <assert.h>
 
-double norm4_avx(double *U, double a, double b, double c, double d, int n);
+double vect_norm4(double *U, double a, double b, double c, double d, int n);

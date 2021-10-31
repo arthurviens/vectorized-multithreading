@@ -14,15 +14,13 @@
 #include "exo2.h"
 
 
-double norm4_avx(double *U, double a, double b, double c, double d, int n) {
+double vect_norm4(double *U, double a, double b, double c, double d, int n) {
     /* Declarations */
     int i;
     int L = 32;
     double total;
 
-    __m256d s;
     __m256d *ptr_vec;
-    __m256d *ptr_res;
     __m256d *ptr;
 
     double *res, *vec;
@@ -44,12 +42,10 @@ double norm4_avx(double *U, double a, double b, double c, double d, int n) {
 
     ptr = (__m256d*)U;
     ptr_vec = (__m256d*)vec;
-    ptr_res = (__m256d*)res;
     
     for(i = 0; i < (n/4); i++, ptr++, U += 4) {
         _mm256_store_pd(res, _mm256_mul_pd(*ptr_vec, *ptr));
-        s = _mm256_hadd_pd(*ptr_res, *ptr_res);
-        total += sqrt(((double*)&s)[0] + ((double*)&s)[2]);
+        total += sqrt(res[0] + res[1] + res[2] + res[3]);
     }
     
     return total;

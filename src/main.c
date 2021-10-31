@@ -75,7 +75,7 @@ int main(int argc, char** argv) {
 	printf("Res = %f. Temps d'exécution de norm4 version basique pour N = %i : %6.6fms \n", res, N, basic_t);
 
 	t0 = now();
-	res = norm4_avx(U, a, b, c, d, N);
+	res = vect_norm4(U, a, b, c, d, N);
 	t1 = now();
 	basic_t = (t1 - t0) * 1000;
 	printf("Res = %f. Temps d'exécution de norm4_avx version vectorielle pour N = %i : %6.6fms \n", res, N, basic_t);
