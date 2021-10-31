@@ -20,7 +20,7 @@ FISRTNAME = Arthur
 LASTNAME = Viens
 
 # Options
-OPT = -Wall -ansi -pedantic -l pthread -lm
+OPT = -Wall -ansi -pedantic -l pthread -mavx
 
 # Compress extension
 COMP = .tar.gz
