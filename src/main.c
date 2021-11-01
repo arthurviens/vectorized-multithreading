@@ -55,7 +55,7 @@ double std(double* a, int n){
 double* timeOf100Calls(double (*f)(double*, double, double, double, double, int), 
 						double* U, double a, double b, double c, double d, int N) {
 	
-	double t0, t1, res, mean_times, std_times, std_val;
+	double t0, t1, res, mean_times, mean_val, std_times, std_val;
 	int i;
 	double* mean_std = malloc(2 * sizeof(double));
 	double* times = malloc(100 * sizeof(double));
@@ -70,11 +70,14 @@ double* timeOf100Calls(double (*f)(double*, double, double, double, double, int)
 	}
 
 	mean_times = mean(times, 100);
+	mean_val = mean(values, 100);
+
+	assert(mean_val = 1315061951.047256); /* check result */
 
 	std_times = std(times, 100);
 	std_val = std(values, 100);
 
-	assert(std_val < 0.001);
+	assert(std_val < 0.001); /* check result */
 
 	mean_std[0] = mean_times;
 	mean_std[1] = std_times;
@@ -97,9 +100,9 @@ int main(int argc, char** argv) {
 
 	/* Initialisations */
 	a = 2.;
-	b = 4.;
-	c = 6.;
-	d = 8.;
+	b = 3.;
+	c = 4.;
+	d = 5.;
 	L = 32;
 	U = malloc(N * sizeof(double) + L);
 	while (((long int)U % L) != 0) {
