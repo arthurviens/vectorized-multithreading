@@ -125,8 +125,6 @@ int main(int argc, char** argv) {
 	mean_std = timeOf100Calls(vect_norm4, U, a, b, c, d, N);
 	printf("Resultat correct. Temps d'exécution de vect_norm4 (vectoriel) pour N = %i \n", N);
 	printf(" --> Temps moyen pour 100 executions = %fms et ecart type = %fms \n", mean_std[0] * 1000, mean_std[1] * 1000);
-	
-	test_permute();
 
 	return 0;
-	}
+}
