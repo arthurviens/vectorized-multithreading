@@ -22,8 +22,9 @@ double vect_norm4(double *U, double a, double b, double c, double d, int n) {
 
     __m256d *ptr_vec;
     __m256d *ptr;
+    __m256d res;
 
-    double *res, *vec;
+    double *vec;
 
     /* Initialisations */
     vec = malloc(4 * sizeof(double) + L);
@@ -31,20 +32,14 @@ double vect_norm4(double *U, double a, double b, double c, double d, int n) {
         vec =(double*)((long int)vec + 1);
     }
 
-    res = malloc(4 * sizeof(double) + L);
-    while (((long int)res % L) != 0) {
-        res =(double*)((long int)res + 1);
-    }
-
     vec[0] = a*a; vec[1] = b*b; vec[2] = c*c; vec[3] = d*d;
-    res[0] = 0; res[1] = 0; res[2] = 0; res[3] = 0;
     total = 0;
 
     ptr = (__m256d*)U;
     ptr_vec = (__m256d*)vec;
     
     for(i = 0; i < (n/4); i++, ptr++, U += 4) {
-        _mm256_store_pd(res, _mm256_mul_pd(*ptr_vec, *ptr));
+        res = _mm256_mul_pd(*ptr_vec, *ptr);
         total += sqrt(res[0] + res[1] + res[2] + res[3]);
     }
     
