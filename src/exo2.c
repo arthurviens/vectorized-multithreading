@@ -16,7 +16,6 @@
 double vect_norm4(double *U, double a, double b, double c, double d, int n) {
     /* Declarations */
     int i;
-    double total;
 
     __m256d carres;
     __m256d *ptr;
@@ -25,7 +24,7 @@ double vect_norm4(double *U, double a, double b, double c, double d, int n) {
     /* Initialisations */
 
     carres[0] = a*a; carres[1] = b*b; carres[2] = c*c; carres[3] = d*d;
-    total = 0;
+    res[0] = 0; res[1] = 0; res[2] = 0; res[3] = 0; 
 
     ptr = (__m256d*)U;
     
@@ -34,13 +33,11 @@ double vect_norm4(double *U, double a, double b, double c, double d, int n) {
     /* Version condensée pour éviter d'avoir des accès mémoire intermédiaires */
     /* Voir version ci-après équivalente pour explications */
     for(i = 0; i < (n/4); i += 4, ptr += 4, U += 16) {
-        res = _mm256_sqrt_pd(_mm256_hadd_pd(_mm256_permute4x64_pd(_mm256_hadd_pd(_mm256_mul_pd(carres, *ptr), _mm256_mul_pd(carres, *(ptr+1))), 0b11011000),
+        res += _mm256_sqrt_pd(_mm256_hadd_pd(_mm256_permute4x64_pd(_mm256_hadd_pd(_mm256_mul_pd(carres, *ptr), _mm256_mul_pd(carres, *(ptr+1))), 0b11011000),
             _mm256_permute4x64_pd(_mm256_hadd_pd(_mm256_mul_pd(carres, *(ptr+2)), _mm256_mul_pd(carres, *(ptr+3))), 0b11011000)));
-
-        total += (res[0] + res[1] + res[2] + res[3]);
     }
 
-    return total;
+    return (res[0] + res[1] + res[2] + res[3]);
 }
 
 
