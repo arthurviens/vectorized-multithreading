@@ -4,12 +4,15 @@
 #include <assert.h>
 
 struct data_thread{
+    unsigned int thread_id;
     double *U;
     double a;
     double b;
     double c;
     double d;
-    int n;
+    int start;
+    int stop;
 };
 
+void *thread_function(void *threadarg);
 double norm4Par(double *U, double a, double b, double c, double d, int n, int nb_threads);

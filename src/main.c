@@ -28,7 +28,7 @@ int N = 1024 * 1024;
 int main(int argc, char** argv) {
 	/* Declarations */
 	unsigned int L, i, nb_threads;
-	double a, b, c, d, t_seq, t_vect;
+	double a, b, c, d, t_seq, t_vect, res, t0, t1;
 	double* U, *mean_std;
 
 	/* Initialisations */
@@ -63,7 +63,11 @@ int main(int argc, char** argv) {
 	printf("Cela représente une acceleration de %f\n", t_seq / t_vect);
 
 	nb_threads = 4;
-	norm4Par(U, a, b, c, d, N, nb_threads);
+	t0 = now();
+	res = norm4Par(U, a, b, c, d, N, nb_threads);
+	t1 = now();
+	printf("Resultat : %f\n", res);
+	printf("Temps d'execution en threadé : %fms\n", (t1 - t0) * 1000);
 
 	return 0;
 }

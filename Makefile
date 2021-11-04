@@ -20,7 +20,7 @@ FISRTNAME = Arthur
 LASTNAME = Viens
 
 # Options
-OPT = -Wall -ansi -pedantic -l pthread -mavx -mavx2
+OPT = -Wall -ansi -pedantic -mavx -mavx2
 
 # Compress extension
 COMP = .tar.gz
@@ -60,7 +60,7 @@ $(BINDIR)%.o : $(SRCDIR)%.c $(HEAD) | $(BINDIR)
 # Règle pour générer l'exécutable
 #--------------------------------------------------------
 $(PROG) : $(OBJ)
-	$(CC) $^ -o $@ -lm
+	$(CC) $^ -o $@ -lm  -lpthread
 	@echo
 	@echo Entrez ./$@ pour exécuter le programme.
 
