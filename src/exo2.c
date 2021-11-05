@@ -28,7 +28,7 @@ double vect_norm4(double *U, double a, double b, double c, double d, int n) {
 
     ptr = (__m256d*)U;
     
-    /* Body */
+    /* Body */ 
 
     /* Version condensée pour éviter d'avoir des accès mémoire intermédiaires */
     /* Voir version ci-après équivalente pour explications */

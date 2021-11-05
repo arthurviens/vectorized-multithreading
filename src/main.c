@@ -28,7 +28,7 @@ int N = 1024 * 1024;
 int main(int argc, char** argv) {
 	/* Declarations */
 	unsigned int L, i, nb_threads;
-	double a, b, c, d, t_seq, t_vect, res, t0, t1;
+	double a, b, c, d, t_seq, t_vect;
 	double* U, *mean_std;
 
 	/* Initialisations */
@@ -43,31 +43,35 @@ int main(int argc, char** argv) {
 	}
 
 	for(i = 0; i < N; i++) {
-		U[i] = i + 1.;
+		U[i] = 1.;
 	}
 
 	/* Body */
 	unit_checks(U);
 
-	mean_std = timeOf100Calls(norm4, U, a, b, c, d, N);
+	printf("      -------------------------     \n");
+	mean_std = timeOfKCalls(norm4, U, a, b, c, d, N);
 	printf("Resultat correct. Temps d'exécution de norm4 (séquentiel) pour N = %i \n", N);
-	printf(" --> Temps moyen pour 100 executions = %fms et ecart type = %fms \n", mean_std[0] * 1000, mean_std[1] * 1000);
+	printf(" --> Temps moyen pour 1000 executions = %fms et ecart type = %fms \n", mean_std[0] * 1000, mean_std[1] * 1000);
 	t_seq = mean_std[0];
 	
-	mean_std = timeOf100Calls(vect_norm4, U, a, b, c, d, N);
+	printf("      -------------------------     \n");
+	mean_std = timeOfKCalls(vect_norm4, U, a, b, c, d, N);
 	printf("Resultat correct. Temps d'exécution de vect_norm4 (vectoriel) pour N = %i \n", N);
-	printf(" --> Temps moyen pour 100 executions = %fms et ecart type = %fms \n", mean_std[0] * 1000, mean_std[1] * 1000);
+	printf(" --> Temps moyen pour 1000 executions = %fms et ecart type = %fms \n", mean_std[0] * 1000, mean_std[1] * 1000);
 	t_vect = mean_std[0];
 
-	printf("    -----    \n");
+	printf("\n");
 	printf("Cela représente une acceleration de %f\n", t_seq / t_vect);
+	printf("\n\n\n");
 
 	nb_threads = 4;
-	t0 = now();
-	res = norm4Par(U, a, b, c, d, N, nb_threads);
-	t1 = now();
-	printf("Resultat : %f\n", res);
-	printf("Temps d'execution en threadé : %fms\n", (t1 - t0) * 1000);
+
+	printf("      -------------------------     \n");
+	mean_std = timeOfKCallsThread(norm4Par, U, a, b, c, d, N, nb_threads, 1);
+	printf("Resultat correct. Temps d'exécution de norm4Par (vectoriel) pour N = %i \n", N);
+	printf(" --> Temps moyen pour 1000 executions = %fms et ecart type = %fms \n", mean_std[0] * 1000, mean_std[1] * 1000);
+	t_vect = mean_std[0];
 
 	return 0;
 }
