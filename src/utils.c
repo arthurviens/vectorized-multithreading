@@ -72,7 +72,7 @@ double* timeOfKCalls(double (*f)(double*, double, double, double, double, int),
 	mean_std[0] = mean_times;
 	mean_std[1] = std_times;
 
-	printf("Résultat : %f\n", mean_val);
+	printf("# Résultat : %f\n", mean_val);
 	return mean_std;
 }
 
@@ -104,6 +104,6 @@ double* timeOfKCallsThread(double (*f)(double*, double, double, double, double, 
 	mean_std[0] = mean_times;
 	mean_std[1] = std_times;
 
-	printf("Résultat : %f\n", mean_val);
+	printf("# Résultat : %f\n", mean_val);
 	return mean_std;
 }

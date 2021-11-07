@@ -17,16 +17,12 @@ double vect_norm4(double *U, double a, double b, double c, double d, int n) {
     /* Declarations */
     int i;
 
-    __m256d carres;
-    __m256d *ptr;
-    __m256d res;
+    __m256d *ptr = (__m256d*)U;
+    __m256d carres = _mm256_set_pd(a*a, b*b, c*c, d*d);
+    __m256d res = _mm256_set_pd(0,0,0,0);
 
     /* Initialisations */
 
-    carres[0] = a*a; carres[1] = b*b; carres[2] = c*c; carres[3] = d*d;
-    res[0] = 0; res[1] = 0; res[2] = 0; res[3] = 0; 
-
-    ptr = (__m256d*)U;
     
     /* Body */ 
 
@@ -58,7 +54,7 @@ for(i = 0; i < (n/4); i += 4, ptr += 4, U += 16) {
     res = _mm256_sqrt_pd(vectot);                       // On peut donc vectoriser la racine carrée
 
     total += sqrt(res[0] + res[1] + res[2] + res[3]);   // On ajoute le résultat
-} 
+}
 */
 
     

@@ -83,6 +83,7 @@ double norm4Par(double *U, double a, double b, double c, double d, int n, int nb
     for(i = 0; i < nb_threads; i++) {
         pthread_join(thread_ptr[i], NULL);
     }
+    
     return sum;
 }
 /* -------------------------------------------------------------------*/
