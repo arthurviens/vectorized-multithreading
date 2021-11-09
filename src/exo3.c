@@ -19,35 +19,25 @@
 #include "exo1.h"
 #include "utils.h"
 
-pthread_mutex_t mutexsum;
-double sum = 0;
+double *rs;
 
 /*-------------------------------------------------------------*/
 /* This is the thread version of the selected code portion     */
 /*-------------------------------------------------------------*/
 void *thread_function(void *threadarg) {
-    /* Local variables */
-    double s;
     /* Association between shared variables and their correspondances */
     struct data_thread *thread_pointer_data = threadarg;
-    /* Shared variables */
-
-
     /* Body of the thread */
 
     if (thread_pointer_data->mode == 0) {
-        s = norm4(thread_pointer_data->U, thread_pointer_data->a, 
+        rs[thread_pointer_data->thread_id] = norm4(thread_pointer_data->U, thread_pointer_data->a, 
                 thread_pointer_data->b, thread_pointer_data->c, 
                 thread_pointer_data->d, thread_pointer_data->n);
     } else {
-        s = vect_norm4(thread_pointer_data->U, thread_pointer_data->a, 
+        rs[thread_pointer_data->thread_id] = vect_norm4(thread_pointer_data->U, thread_pointer_data->a, 
                 thread_pointer_data->b, thread_pointer_data->c, 
                 thread_pointer_data->d, thread_pointer_data->n);
     }
-
-    pthread_mutex_lock(&mutexsum);
-    sum += s;
-    pthread_mutex_unlock(&mutexsum);
 
     pthread_exit(NULL);
 }
@@ -58,16 +48,17 @@ double norm4Par(double *U, double a, double b, double c, double d, int n, int nb
     struct data_thread *thread_data_array;
     unsigned int i, slice;
     pthread_t *thread_ptr;
+    double sum;
 
     /* Create and launch threads */
     thread_data_array = malloc(nb_threads * sizeof(struct data_thread));
     thread_ptr = malloc(nb_threads * sizeof(pthread_t));
-
-    sum = 0;
+    rs = malloc(nb_threads * sizeof(double));
 
     slice = n / nb_threads;
     for(i = 0; i < nb_threads; i++) {
         /* Prepare data for this thread */
+        thread_data_array[i].thread_id = i;
         thread_data_array[i].U = U + i * slice;
         thread_data_array[i].a = a;
         thread_data_array[i].b = b;
@@ -82,6 +73,11 @@ double norm4Par(double *U, double a, double b, double c, double d, int n, int nb
     /* Wait for every thread to complete  */
     for(i = 0; i < nb_threads; i++) {
         pthread_join(thread_ptr[i], NULL);
+    }
+
+    sum = 0;
+    for (i = 0; i < nb_threads; i++) {
+        sum += rs[i];
     }
     
     return sum;

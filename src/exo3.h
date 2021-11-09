@@ -4,6 +4,7 @@
 #include <assert.h>
 
 struct data_thread{
+    int thread_id;
     double *U;
     double a;
     double b;

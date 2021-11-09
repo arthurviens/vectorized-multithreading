@@ -1,10 +1,12 @@
+#include <stdlib.h>
 #include "math.h"
 #include <time.h>
 #include <sys/time.h>
 #include "utils.h"
 #include "exo1.h"
+#include "exo2.h"
 
-int K = 1000;
+extern int K;
 
 /*! 
  * \fn double now()
@@ -21,6 +23,7 @@ double now(){
 void unit_checks(double *U) {
 	assert(U);
 	unit_check_norm4();
+	unit_check_vect_norm4();
 }
 
 double mean(double* a, int n) {
@@ -42,6 +45,11 @@ double std(double* a, int n){
 		var += (a[i] - local_mean) * (a[i] - local_mean);
 	}
 	return sqrt(var / n);	
+}
+
+double drand ( double low, double high )
+{
+    return ( (double)rand() * ( high - low ) ) / (double)RAND_MAX + low;
 }
 
 double* timeOfKCalls(double (*f)(double*, double, double, double, double, int), 

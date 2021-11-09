@@ -12,6 +12,8 @@ double mean(double* a, int n);
 
 double std(double* a, int n);
 
+double drand ( double low, double high );
+
 double* timeOfKCalls(double (*f)(double*, double, double, double, double, int), 
 						double* U, double a, double b, double c, double d, int N);
 

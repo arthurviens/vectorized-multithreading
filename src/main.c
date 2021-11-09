@@ -15,8 +15,8 @@
 #include "exo3.h"
 #include "utils.h"
 
-int N = 1024 * 1024;
-
+int N = 64;
+int K = 1;
 
 /*! 
  * \fn int main(int argc, char** argv)
@@ -43,45 +43,48 @@ int main(int argc, char** argv) {
 	}
 
 	for(i = 0; i < N; i++) {
-		U[i] = 1.;
+		U[i] = drand(0, 10);
 	}
 
-	/* Body */
-	unit_checks(U);
 
+	/* Body */
+	/*unit_checks(U);*/
+	
 	printf("######################### Scalaire #########################\n");
 	mean_std = timeOfKCalls(norm4, U, a, b, c, d, N);
-	printf("# Resultat correct. Temps d'exécution de norm4 (scalaire) pour N = %i \n", N);
-	printf("# --> Temps moyen pour 1000 executions = %fms et ecart type = %fms \n", mean_std[0] * 1000, mean_std[1] * 1000);
+	printf("# Temps d'exécution de norm4 (scalaire) pour N = %i \n", N);
+	printf("# --> Temps moyen pour %d executions = %fms et ecart type = %fms \n", K, mean_std[0] * 1000, mean_std[1] * 1000);
 	t_seq = mean_std[0];
 	
 	printf("############################################################\n");
 	printf("######################### Vectoriel ########################\n");
 	mean_std = timeOfKCalls(vect_norm4, U, a, b, c, d, N);
-	printf("# Resultat correct. Temps d'exécution de vect_norm4 (vectoriel) pour N = %i \n", N);
-	printf("# --> Temps moyen pour 1000 executions = %fms et ecart type = %fms \n", mean_std[0] * 1000, mean_std[1] * 1000);
-	t_vect = mean_std[0];
+	printf("# Temps d'exécution de vect_norm4 (vectoriel) pour N = %i \n", N);
+	printf("# --> Temps moyen pour %d executions = %fms et ecart type = %fms \n", K, mean_std[0] * 1000, mean_std[1] * 1000);
+	t_vect = mean_std[0]; 
 	printf("#\n");
 
+	/*
 	printf("# L'accélération séquentielle Scalaire -> Vectorielle %f\n", t_seq / t_vect);
 	printf("############################################################\n");
 	printf("\n");
 	printf("############################################################\n");
 	printf("######################### Multi-Thread #####################\n");
 
-	nb_threads = 8;
+	nb_threads = 4;
 	printf("# MODE 0 : Multi-Thread scalaire \n");
 	mean_std = timeOfKCallsThread(norm4Par, U, a, b, c, d, N, nb_threads, 0);
-	printf("# Resultat correct. Temps d'exécution de norm4Par (scalaire) pour N = %i \n", N);
-	printf("# --> Temps moyen pour 1000 executions = %fms et ecart type = %fms \n", mean_std[0] * 1000, mean_std[1] * 1000);
+	printf("# Temps d'exécution de norm4Par (scalaire) pour N = %i \n", N);
+	printf("# --> Temps moyen pour %d executions = %fms et ecart type = %fms \n", K, mean_std[0] * 1000, mean_std[1] * 1000);
 	printf("#\n");
 	printf("# Accélération scalaire -> multi-thread scalaire %f\n", t_seq / mean_std[0]);
 	printf("############################################################\n");
-
+	*/
+	/*
 	printf("# MODE 1 : Multi-Thread vectoriel \n");
 	mean_std = timeOfKCallsThread(norm4Par, U, a, b, c, d, N, nb_threads, 1);
-	printf("# Resultat correct. Temps d'exécution de norm4Par (vectoriel) pour N = %i \n", N);
-	printf("# --> Temps moyen pour 1000 executions = %fms et ecart type = %fms \n", mean_std[0] * 1000, mean_std[1] * 1000);
+	printf("# Temps d'exécution de norm4Par (vectoriel) pour N = %i \n", N);
+	printf("# --> Temps moyen pour %d executions = %fms et ecart type = %fms \n", K, mean_std[0] * 1000, mean_std[1] * 1000);
 	printf("#\n");
 	printf("# Accélération vectorielle et multi-thread vectorielle %f\n", t_vect / mean_std[0]);
 	printf("############################################################\n");
@@ -89,7 +92,8 @@ int main(int argc, char** argv) {
 	printf("\n");
 	printf("-----> Accélération pour N = %d entre version \n", N);
 	printf("-----> Séquentielle scalaire et Multi_Thread Vectorielle (Accélération max) : %f\n", t_seq / mean_std[0]);
-
+	printf("Bien que s'agissant d'une division entre deux moyennes sur %d exécutions, l'accélération varie relativement beaucoup.\n", K);
+	*/
 
 	
 	return 0;

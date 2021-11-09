@@ -60,7 +60,7 @@ $(BINDIR)%.o : $(SRCDIR)%.c $(HEAD) | $(BINDIR)
 # Règle pour générer l'exécutable
 #--------------------------------------------------------
 $(PROG) : $(OBJ)
-	$(CC) $^ -o $@ -lm  -pthread
+	$(CC) $^ -o $@ -lm  -lpthread
 	@echo
 	@echo Entrez ./$@ pour exécuter le programme.
 
