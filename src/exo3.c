@@ -19,25 +19,32 @@
 #include "exo1.h"
 #include "utils.h"
 
-double *rs;
+pthread_mutex_t mutexsum;
+double sum;
 
 /*-------------------------------------------------------------*/
 /* This is the thread version of the selected code portion     */
 /*-------------------------------------------------------------*/
 void *thread_function(void *threadarg) {
     /* Association between shared variables and their correspondances */
+    double s;
     struct data_thread *thread_pointer_data = threadarg;
     /* Body of the thread */
 
     if (thread_pointer_data->mode == 0) {
-        rs[thread_pointer_data->thread_id] = norm4(thread_pointer_data->U, thread_pointer_data->a, 
+        s = norm4(thread_pointer_data->U, thread_pointer_data->a, 
                 thread_pointer_data->b, thread_pointer_data->c, 
                 thread_pointer_data->d, thread_pointer_data->n);
     } else {
-        rs[thread_pointer_data->thread_id] = vect_norm4(thread_pointer_data->U, thread_pointer_data->a, 
+        s = vect_norm4(thread_pointer_data->U, thread_pointer_data->a, 
                 thread_pointer_data->b, thread_pointer_data->c, 
                 thread_pointer_data->d, thread_pointer_data->n);
     }
+
+    pthread_mutex_lock(&mutexsum);
+    sum += s;
+    pthread_mutex_unlock(&mutexsum);
+
 
     pthread_exit(NULL);
 }
@@ -48,12 +55,13 @@ double norm4Par(double *U, double a, double b, double c, double d, int n, int nb
     struct data_thread *thread_data_array;
     unsigned int i, slice;
     pthread_t *thread_ptr;
-    double sum;
+    
 
     /* Create and launch threads */
     thread_data_array = malloc(nb_threads * sizeof(struct data_thread));
     thread_ptr = malloc(nb_threads * sizeof(pthread_t));
-    rs = malloc(nb_threads * sizeof(double));
+
+    sum = 0;
 
     slice = n / nb_threads;
     for(i = 0; i < nb_threads; i++) {
@@ -73,11 +81,6 @@ double norm4Par(double *U, double a, double b, double c, double d, int n, int nb
     /* Wait for every thread to complete  */
     for(i = 0; i < nb_threads; i++) {
         pthread_join(thread_ptr[i], NULL);
-    }
-
-    sum = 0;
-    for (i = 0; i < nb_threads; i++) {
-        sum += rs[i];
     }
     
     return sum;

@@ -15,8 +15,8 @@
 #include "exo3.h"
 #include "utils.h"
 
-int N = 64;
-int K = 1;
+int N = 1024 * 1024;
+int K = 1000;
 
 /*! 
  * \fn int main(int argc, char** argv)
@@ -48,7 +48,7 @@ int main(int argc, char** argv) {
 
 
 	/* Body */
-	/*unit_checks(U);*/
+	unit_checks(U);
 	
 	printf("######################### Scalaire #########################\n");
 	mean_std = timeOfKCalls(norm4, U, a, b, c, d, N);
@@ -64,7 +64,6 @@ int main(int argc, char** argv) {
 	t_vect = mean_std[0]; 
 	printf("#\n");
 
-	/*
 	printf("# L'accélération séquentielle Scalaire -> Vectorielle %f\n", t_seq / t_vect);
 	printf("############################################################\n");
 	printf("\n");
@@ -79,8 +78,7 @@ int main(int argc, char** argv) {
 	printf("#\n");
 	printf("# Accélération scalaire -> multi-thread scalaire %f\n", t_seq / mean_std[0]);
 	printf("############################################################\n");
-	*/
-	/*
+	
 	printf("# MODE 1 : Multi-Thread vectoriel \n");
 	mean_std = timeOfKCallsThread(norm4Par, U, a, b, c, d, N, nb_threads, 1);
 	printf("# Temps d'exécution de norm4Par (vectoriel) pour N = %i \n", N);
@@ -93,7 +91,7 @@ int main(int argc, char** argv) {
 	printf("-----> Accélération pour N = %d entre version \n", N);
 	printf("-----> Séquentielle scalaire et Multi_Thread Vectorielle (Accélération max) : %f\n", t_seq / mean_std[0]);
 	printf("Bien que s'agissant d'une division entre deux moyennes sur %d exécutions, l'accélération varie relativement beaucoup.\n", K);
-	*/
+	
 
 	
 	return 0;

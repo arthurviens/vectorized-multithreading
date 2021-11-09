@@ -33,34 +33,18 @@ double vect_norm4(double *U, double a, double b, double c, double d, int n) {
     int i;
     
     __m256d *ptr = (__m256d*)U;
-    __m256d carres = _mm256_set_pd(a*a, b*b, c*c, d*d);
+    __m256d carres = _mm256_set_pd(d*d, c*c, b*b, a*a);
     __m256d res = _mm256_set_pd(0,0,0,0);
-    __m256d tmp = _mm256_set_pd(0,0,0,0);
 
     /* Initialisations */
-
-/*    for(i = 0; i < n/4; i++) {
-		assert((*(ptr+i))[0] == 1);
-		assert((*(ptr+i+1))[1] == 1);
-	}*/
     /* Body */ 
 
     /* Version condensée pour éviter d'avoir des accès mémoire intermédiaires */
     /* Voir version ci-après équivalente pour explications */
-    
     for(i = 0; i < (n/4); i += 4, ptr += 4) {
-        tmp += _mm256_sqrt_pd(_mm256_hadd_pd(_mm256_permute4x64_pd(_mm256_hadd_pd(_mm256_mul_pd(carres, *ptr), _mm256_mul_pd(carres, *(ptr+1))), 0b11011000),
+        res += _mm256_sqrt_pd(_mm256_hadd_pd(_mm256_permute4x64_pd(_mm256_hadd_pd(_mm256_mul_pd(carres, *ptr), _mm256_mul_pd(carres, *(ptr+1))), 0b11011000),
             _mm256_permute4x64_pd(_mm256_hadd_pd(_mm256_mul_pd(carres, *(ptr+2)), _mm256_mul_pd(carres, *(ptr+3))), 0b11011000)));
-        printf("i = %d, sum(res) = %f, res = ", i, tmp[0]+tmp[1]+tmp[2]+tmp[3]);
-        printf("Résultat des quatre : ");
-        print_m256d((*ptr));
-        print_m256d(*(ptr+1));
-        print_m256d(*(ptr+2));
-        print_m256d(*(ptr+3));
-        printf("Ce qui donne : ");
-        print_m256d(tmp);
-        fflush(stdout);
-        res += tmp;
+        
     }
 
     return (res[0] + res[1] + res[2] + res[3]);
@@ -109,10 +93,10 @@ void unit_check_vect_norm4() {
 		U =(double*)((long int)U + 1);
 	}
     for (i = 0; i < n; i++) {
-	    U[i] = 1;
+	    U[i] = i;
     }
 
 	res = vect_norm4(U, a, b, c, d, n);
 	/* Should be equal to */
-	assert(abs(res -  21.908902) < 0.00001);
+	assert(abs(res -  60.493907) < 0.00001);
 }

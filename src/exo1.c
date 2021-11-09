@@ -24,7 +24,7 @@
 double norm4(double *U, double a, double b, double c, double d, int n){
     /* Declarations */
     unsigned int i;
-    double s, tmp;
+    double s;
     double aa;
     double bb;
     double cc;
@@ -39,9 +39,7 @@ double norm4(double *U, double a, double b, double c, double d, int n){
 
     /* Body */ 
     for(i = 0; i < n; i+=4) {
-        tmp = sqrt(aa * U[i] + bb * U[i+1] + cc * U[i+2] + dd * U[i+3]);
-        printf("i = %d, tmp = %f, U[%d] -> U[%d] = (%f, %f, %f, %f)\n", i, tmp, i, i+3, U[i], U[i+1], U[i+2], U[i+3]);
-        s += tmp;
+        s += sqrt(aa * U[i] + bb * U[i+1] + cc * U[i+2] + dd * U[i+3]);
     } 
 
     return s;
@@ -65,11 +63,11 @@ void unit_check_norm4() {
     /* Body */
 	U = malloc(n * sizeof(double));
     for (i = 0; i < n; i++) {
-	    U[i] = 1;
+	    U[i] = i;
     }
 
 	res = norm4(U, a, b, c, d, n);
-
+    
 	/* Should be equal to */
-	assert(abs(res -  21.908902) < 0.00001);
+	assert(abs(res -  60.493907) < 0.00001);
 }
