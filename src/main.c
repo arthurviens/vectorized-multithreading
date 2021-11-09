@@ -5,6 +5,7 @@
  * \version 0.1
  * \brief Fichier main
  */
+#include <unistd.h>
 #include <assert.h>
 #include <time.h>
 #include <sys/time.h>
@@ -27,7 +28,8 @@ int K = 1000;
  */
 int main(int argc, char** argv) {
 	/* Declarations */
-	unsigned int L, i, nb_threads;
+	unsigned int L, i;
+	long nb_logical_processor;
 	double a, b, c, d, t_seq, t_vect;
 	double* U, *mean_std;
 
@@ -43,7 +45,7 @@ int main(int argc, char** argv) {
 	}
 
 	for(i = 0; i < N; i++) {
-		U[i] = drand(0, 10);
+		U[i] = drand(0, 15); /* Initialisation aléatoire du vecteur */
 	}
 
 
@@ -70,17 +72,18 @@ int main(int argc, char** argv) {
 	printf("############################################################\n");
 	printf("######################### Multi-Thread #####################\n");
 
-	nb_threads = 4;
-	printf("# MODE 0 : Multi-Thread scalaire \n");
-	mean_std = timeOfKCallsThread(norm4Par, U, a, b, c, d, N, nb_threads, 0);
+
+	nb_logical_processor = sysconf(_SC_NPROCESSORS_CONF);
+	printf("# MODE 0 : Multi-Thread scalaire. Nombre de threads : %ld \n", nb_logical_processor);
+	mean_std = timeOfKCallsThread(norm4Par, U, a, b, c, d, N, nb_logical_processor, 0);
 	printf("# Temps d'exécution de norm4Par (scalaire) pour N = %i \n", N);
 	printf("# --> Temps moyen pour %d executions = %fms et ecart type = %fms \n", K, mean_std[0] * 1000, mean_std[1] * 1000);
 	printf("#\n");
 	printf("# Accélération scalaire -> multi-thread scalaire %f\n", t_seq / mean_std[0]);
 	printf("############################################################\n");
 	
-	printf("# MODE 1 : Multi-Thread vectoriel \n");
-	mean_std = timeOfKCallsThread(norm4Par, U, a, b, c, d, N, nb_threads, 1);
+	printf("# MODE 1 : Multi-Thread vectoriel. Nombre de threads : %ld \n", nb_logical_processor);
+	mean_std = timeOfKCallsThread(norm4Par, U, a, b, c, d, N, nb_logical_processor, 1);
 	printf("# Temps d'exécution de norm4Par (vectoriel) pour N = %i \n", N);
 	printf("# --> Temps moyen pour %d executions = %fms et ecart type = %fms \n", K, mean_std[0] * 1000, mean_std[1] * 1000);
 	printf("#\n");
