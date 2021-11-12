@@ -86,3 +86,30 @@ double norm4Par(double *U, double a, double b, double c, double d, int n, int nb
     return sum;
 }
 /* -------------------------------------------------------------------*/
+
+void unit_check_vect_norm4_thread() {
+    /* Declarations */
+    int n, i, L;
+	double a, b, c, d, res;
+	double* U;
+
+    /* Initialisations */
+	a = 1.;	b = 2.;	c = 3.;	d = 4.;
+	n = 64; 
+    L = 32;
+
+    /* Body */
+	U = malloc(n * sizeof(double) + L);
+	while (((long int)U % L) != 0) {
+		U =(double*)((long int)U + 1);
+	}
+
+    for (i = 0; i < n; i++) {
+	    U[i] = i;
+    }
+	
+	res = norm4Par(U, a, b, c, d, n, 4, 1);
+
+	/* Should be equal to */
+	assert(abs(res -  471.336990) < 0.00001);
+}

@@ -16,3 +16,4 @@ struct data_thread{
 
 void *thread_function(void *threadarg);
 double norm4Par(double *U, double a, double b, double c, double d, int n, int nb_threads, int mode);
+void unit_check_vect_norm4_thread();

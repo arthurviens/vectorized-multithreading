@@ -5,6 +5,7 @@
 #include "utils.h"
 #include "exo1.h"
 #include "exo2.h"
+#include "exo3.h"
 
 extern int K;
 
@@ -23,7 +24,11 @@ double now(){
 void unit_checks(double *U) {
 	assert(U);
 	unit_check_norm4();
+	printf("Tests unitaires exo 1 : OK\n");
 	unit_check_vect_norm4();
+	printf("Tests unitaires exo 2 : OK\n");
+	unit_check_vect_norm4_thread();
+	printf("Tests unitaires exo 3 : OK\n\n");
 }
 
 double mean(double* a, int n) {

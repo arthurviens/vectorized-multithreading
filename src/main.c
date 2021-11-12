@@ -55,14 +55,14 @@ int main(int argc, char** argv) {
 	printf("######################### Scalaire #########################\n");
 	mean_std = timeOfKCalls(norm4, U, a, b, c, d, N);
 	printf("# Temps d'exécution de norm4 (scalaire) pour N = %i \n", N);
-	printf("# --> Temps moyen pour %d executions = %fms et ecart type = %fms \n", K, mean_std[0] * 1000, mean_std[1] * 1000);
+	printf("# --> Temps moyen pour %d executions = %fms et écart type = %fms \n", K, mean_std[0] * 1000, mean_std[1] * 1000);
 	t_seq = mean_std[0];
 	
 	printf("############################################################\n");
 	printf("######################### Vectoriel ########################\n");
 	mean_std = timeOfKCalls(vect_norm4, U, a, b, c, d, N);
 	printf("# Temps d'exécution de vect_norm4 (vectoriel) pour N = %i \n", N);
-	printf("# --> Temps moyen pour %d executions = %fms et ecart type = %fms \n", K, mean_std[0] * 1000, mean_std[1] * 1000);
+	printf("# --> Temps moyen pour %d executions = %fms et écart type = %fms \n", K, mean_std[0] * 1000, mean_std[1] * 1000);
 	t_vect = mean_std[0]; 
 	printf("#\n");
 
@@ -77,7 +77,7 @@ int main(int argc, char** argv) {
 	printf("# MODE 0 : Multi-Thread scalaire. Nombre de threads : %ld \n", nb_logical_processor);
 	mean_std = timeOfKCallsThread(norm4Par, U, a, b, c, d, N, nb_logical_processor, 0);
 	printf("# Temps d'exécution de norm4Par (scalaire) pour N = %i \n", N);
-	printf("# --> Temps moyen pour %d executions = %fms et ecart type = %fms \n", K, mean_std[0] * 1000, mean_std[1] * 1000);
+	printf("# --> Temps moyen pour %d executions = %fms et écart type = %fms \n", K, mean_std[0] * 1000, mean_std[1] * 1000);
 	printf("#\n");
 	printf("# Accélération scalaire -> multi-thread scalaire %f\n", t_seq / mean_std[0]);
 	printf("############################################################\n");
@@ -85,7 +85,7 @@ int main(int argc, char** argv) {
 	printf("# MODE 1 : Multi-Thread vectoriel. Nombre de threads : %ld \n", nb_logical_processor);
 	mean_std = timeOfKCallsThread(norm4Par, U, a, b, c, d, N, nb_logical_processor, 1);
 	printf("# Temps d'exécution de norm4Par (vectoriel) pour N = %i \n", N);
-	printf("# --> Temps moyen pour %d executions = %fms et ecart type = %fms \n", K, mean_std[0] * 1000, mean_std[1] * 1000);
+	printf("# --> Temps moyen pour %d executions = %fms et écart type = %fms \n", K, mean_std[0] * 1000, mean_std[1] * 1000);
 	printf("#\n");
 	printf("# Accélération vectorielle et multi-thread vectorielle %f\n", t_vect / mean_std[0]);
 	printf("############################################################\n");
